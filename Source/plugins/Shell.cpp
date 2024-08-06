@@ -41,12 +41,19 @@ namespace PluginHost
             if (locator.empty() == true) {
                 result = Core::ServiceAdministrator::Instance().Instantiate(Core::Library(), className.c_str(), version, interface);
             } else {
-                auto all_paths = GetLibrarySearchPaths2(locator);
-                for(auto it = all_paths.first; it != all_paths.second && result == nullptr; ++it){
-                    Core::File file(it->c_str());
+                std::cout << "calling getlibsSearch from root" << std::endl;
+                RPC::IStringIterator* all_paths = GetLibrarySearchPaths(locator);
+                if(all_paths == nullptr){
+                    std:: cout << "error with string iterator paths" << std::endl;
+                }
+
+                string element;
+                while (all_paths->Next(element) == true){
+                    Core::File file(element.c_str());
                     if (file.Exists())
                     {
-                        Core::Library resource(it->c_str());
+                        std::cout << "reached shell.cpp iterating through paths" << std::endl;
+                        Core::Library resource(element.c_str());
                         if (resource.IsLoaded())
                             result = Core::ServiceAdministrator::Instance().Instantiate(
                                 resource,
@@ -54,7 +61,9 @@ namespace PluginHost
                                 version,
                                 interface);
                     }
+                    ++all_paths;
                 }
+                all_paths->Release();
             }
         } else {
             ICOMLink* handler(QueryInterface<ICOMLink>());

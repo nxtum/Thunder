@@ -1296,16 +1296,10 @@ namespace PluginHost {
             uint32_t WakeupChildren(const Core::process_t parentPID, const uint32_t timeout);
             #endif
 
-            std::pair<std::vector<string>::const_iterator,std::vector<string>::const_iterator> GetLibrarySearchPaths2
-            (const string& locator) const override
-            {
-                const std::vector<string> paths = GetLibrarySearchPaths(locator);
-                return std::make_pair(paths.begin(),paths.end());
-            }
-
-            std::vector<string> GetLibrarySearchPaths(const string& locator) const override
-            {
-                std::vector<string> all_paths;
+            RPC::IStringIterator* GetLibrarySearchPaths(const string& locator) const override 
+            {   
+                std::cout << "reached get lib search paths with locator: " << locator << std::endl;
+                std::list<string> all_paths;
 
                 const std::vector<string> temp = _administrator.Configuration().LinkerPluginPaths();
                 string rootPath(PluginHost::Service::Configuration().SystemRootPath.Value());
@@ -1313,6 +1307,8 @@ namespace PluginHost {
                 if (rootPath.empty() == false) {
                     rootPath = Core::Directory::Normalize(rootPath);
                 }
+
+                std::cout << "reached after root path checking" << std::endl;
 
                 if (!temp.empty())
                 {
@@ -1325,9 +1321,12 @@ namespace PluginHost {
                             all_paths.push_back(rootPath + Core::Directory::Normalize(s) + locator);
                         }
                     }
+
+                    std::cout << "reached part where temp is not empty so push back paths" << std::endl;
                 }
                 else if (rootPath.empty() == false)
                 {
+                    std::cout << "reached part where rootpath so push back paths" << std::endl;
                     // system configured paths
                     all_paths.push_back(rootPath + DataPath() + locator);
                     all_paths.push_back(rootPath + PersistentPath() + locator);
@@ -1335,6 +1334,7 @@ namespace PluginHost {
                     all_paths.push_back(rootPath + PluginPath() + locator);
                 }
                 else {
+                    std::cout << "reached part where temp is empty so push back paths" << std::endl;
                     // system configured paths
                     all_paths.push_back(DataPath() + locator);
                     all_paths.push_back(PersistentPath() + locator);
@@ -1342,17 +1342,67 @@ namespace PluginHost {
                     all_paths.push_back(PluginPath() + locator);
                 }
 
-                return all_paths;
+                //return all_paths;
+                std::cout << "returing paths" << std::endl;
+                return (Core::ServiceType<RPC::StringIterator>::Create<RPC::IStringIterator>(all_paths));
+
             }
+
 
             Core::Library LoadLibrary(const string& name) {
                 uint8_t progressedState = 0;
                 Core::Library result;
+                std::cout << "reached load library function pluginserver.h" << std::endl;
+                RPC::IStringIterator* all_paths = GetLibrarySearchPaths(name);
 
-                std::vector<string> all_paths = GetLibrarySearchPaths(name);
-                std::vector<string>::const_iterator iter = std::begin(all_paths);
+                //std::vector<string> all_paths = GetLibrarySearchPaths(name);
+                //std::vector<string>::const_iterator iter = std::begin(all_paths);
 
-                while ( (iter != std::end(all_paths)) && (progressedState <= 2) ) {
+                string element;
+                while((all_paths->Next(element) == true) && (progressedState <= 2)){
+                    std::cout << "reached loadlib iterating step 1 " << element << std::endl;
+                    Core::File libraryToLoad(element.c_str());
+                    std::cout << "intialised file library to load" << std::endl;
+                    if (libraryToLoad.Exists() == true) {
+                        std::cout << "library to load exists" << std::endl;
+                        if (progressedState == 0) {
+                            progressedState = 1;
+                        }
+
+                        // Loading a library, in the static initializers, might register Service::Metadata structures. As
+                        // the dlopen has a process wide system lock, make sure that the, during open used lock of the
+                        // ServiceAdministrator, is already taken before entering the dlopen. This can only be achieved
+                        // by forwarding this call to the ServiceAdministrator, so please so...
+                        Core::Library newLib = Core::ServiceAdministrator::Instance().LoadLibrary(element.c_str());
+
+                         if (newLib.IsLoaded() == true) {
+                            if (progressedState == 1) {
+                                progressedState = 2;
+                            }
+                            
+
+                            Core::System::ModuleBuildRefImpl moduleBuildRef = reinterpret_cast<Core::System::ModuleBuildRefImpl>(newLib.LoadFunction(_T("ModuleBuildRef")));
+                            Core::System::ModuleServiceMetadataImpl moduleServiceMetadata = reinterpret_cast<Core::System::ModuleServiceMetadataImpl>(newLib.LoadFunction(_T("ModuleServiceMetadata")));
+                            if ((moduleBuildRef != nullptr) && (moduleServiceMetadata != nullptr)) {
+                                result = newLib;
+                                progressedState = 3;
+                                if (_metadata.IsValid() == false) {
+                                    _metadata = moduleServiceMetadata();
+                                    if (_metadata.IsValid() == true) {
+                                        _precondition.Load(_metadata.Precondition());
+                                        _termination.Load(_metadata.Termination());
+                                    }
+                                    _metadata.Hash(moduleBuildRef());
+                                }
+                            }
+                        }
+                    }
+                    ++all_paths;
+                }
+                std::cout << "error from lib to load" << std::endl;
+                all_paths -> Release();
+
+                 /* while ( (iter != std::end(all_paths)) && (progressedState <= 2) ) {
                     Core::File libraryToLoad(*iter);
 
                     if (libraryToLoad.Exists() == true) {
@@ -1388,7 +1438,8 @@ namespace PluginHost {
                         }
                     }
                     ++iter;
-                }
+                    
+                } */
 
                 if (HasError() == false) {
                     if (progressedState == 0) {
