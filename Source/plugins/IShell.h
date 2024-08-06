@@ -445,11 +445,14 @@ namespace PluginHost {
 
         void* Root(uint32_t& pid, const uint32_t waitTime, const string className, const uint32_t interface, const uint32_t version = ~0);
 
-        /* @stubgen:omit */
+        
         virtual std::vector<string> GetLibrarySearchPaths(const string&) const
         {
             return std::vector<string> {};
         }
+
+        virtual std::pair<std::vector<string>::const_iterator,std::vector<string>::const_iterator> GetLibrarySearchPaths2
+        (const string&) const = 0;
     };
 
 } // namespace PluginHost

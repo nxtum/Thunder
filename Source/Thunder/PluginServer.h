@@ -1296,6 +1296,13 @@ namespace PluginHost {
             uint32_t WakeupChildren(const Core::process_t parentPID, const uint32_t timeout);
             #endif
 
+            std::pair<std::vector<string>::const_iterator,std::vector<string>::const_iterator> GetLibrarySearchPaths2
+            (const string& locator) const override
+            {
+                const std::vector<string> paths = GetLibrarySearchPaths(locator);
+                return std::make_pair(paths.begin(),paths.end());
+            }
+
             std::vector<string> GetLibrarySearchPaths(const string& locator) const override
             {
                 std::vector<string> all_paths;
