@@ -41,18 +41,13 @@ namespace PluginHost
             if (locator.empty() == true) {
                 result = Core::ServiceAdministrator::Instance().Instantiate(Core::Library(), className.c_str(), version, interface);
             } else {
-                std::cout << "calling getlibsSearch from root" << std::endl;
                 RPC::IStringIterator* all_paths = GetLibrarySearchPaths(locator);
-                if(all_paths == nullptr){
-                    std:: cout << "error with string iterator paths" << std::endl;
-                }
 
                 string element;
                 while (all_paths->Next(element) == true){
                     Core::File file(element.c_str());
                     if (file.Exists())
                     {
-                        std::cout << "reached shell.cpp iterating through paths" << std::endl;
                         Core::Library resource(element.c_str());
                         if (resource.IsLoaded())
                             result = Core::ServiceAdministrator::Instance().Instantiate(
@@ -61,7 +56,7 @@ namespace PluginHost
                                 version,
                                 interface);
                     }
-                    ++all_paths;
+                    
                 }
                 all_paths->Release();
             }

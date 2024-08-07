@@ -415,7 +415,7 @@ namespace PluginHost {
             return (nullptr);
         }
 
-        //virtual RPC::IStringIterator* GetLibrarySearchPaths(const string&) const = 0;
+        virtual RPC::IStringIterator* GetLibrarySearchPaths(const string&) const = 0;
 
     private:
         inline uint32_t EnableStoragePath(const string& storagePath, uint16_t permission, const string& user, const string& group)
@@ -447,9 +447,6 @@ namespace PluginHost {
 
         void* Root(uint32_t& pid, const uint32_t waitTime, const string className, const uint32_t interface, const uint32_t version = ~0);
 
-        public:
-        //virtual RPC::IStringIterator* GetLibrarySearchPaths(const string&) const = 0;
-        virtual RPC::IStringIterator* GetLibrarySearchPaths(const string&) const = 0;
     };
 
 } // namespace PluginHost
