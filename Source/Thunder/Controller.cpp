@@ -245,7 +245,7 @@ namespace Plugin {
         const string normalized_path = Core::File::Normalize(path, true /* safe paths only */);
 
         if (normalized_path.empty() == true) {
-            result = Core::ERROR_PRIVILIGED_REQUEST;
+            result = Core::ERROR_RESTRICTED_ACTION;
         }
         else {
             Core::File file(_service->PersistentPath() + normalized_path);
@@ -268,7 +268,7 @@ namespace Plugin {
     {
         Core::hresult result =  Core::System::Reboot();
 
-        if ((result != Core::ERROR_NONE) && (result != Core::ERROR_UNAVAILABLE) && (result != Core::ERROR_PRIVILIGED_REQUEST) && (result != Core::ERROR_GENERAL)) {
+        if ((result != Core::ERROR_NONE) && (result != Core::ERROR_UNAVAILABLE) && (result != Core::ERROR_RESTRICTED_ACTION) && (result != Core::ERROR_GENERAL)) {
             result = Core::ERROR_GENERAL;
         }
 
@@ -332,7 +332,7 @@ namespace Plugin {
 
     Core::hresult Controller::Clone(const string& basecallsign, const string& newcallsign)
     {
-        Core::hresult result = Core::ERROR_PRIVILIGED_REQUEST;
+        Core::hresult result = Core::ERROR_RESTRICTED_ACTION;
         const string controllerName = _pluginServer->Controller()->Callsign();
 
         ASSERT(_pluginServer != nullptr);
@@ -356,7 +356,7 @@ namespace Plugin {
 
     Core::hresult Controller::Destroy(const string& callsign)
     {
-        Core::hresult result = Core::ERROR_PRIVILIGED_REQUEST;
+        Core::hresult result = Core::ERROR_RESTRICTED_ACTION;
         const string controllerName = _pluginServer->Controller()->Callsign();
 
         ASSERT(_pluginServer != nullptr);
@@ -907,7 +907,7 @@ namespace Plugin {
             }
         }
         else {
-            result = Core::ERROR_PRIVILIGED_REQUEST;
+            result = Core::ERROR_RESTRICTED_ACTION;
         }
         return result;
     }
@@ -934,7 +934,7 @@ namespace Plugin {
             }
         }
         else {
-            result = Core::ERROR_PRIVILIGED_REQUEST;
+            result = Core::ERROR_RESTRICTED_ACTION;
         }
 
         return result;
@@ -962,7 +962,7 @@ namespace Plugin {
             }
         }
         else {
-            result = Core::ERROR_PRIVILIGED_REQUEST;
+            result = Core::ERROR_RESTRICTED_ACTION;
         }
         return result;
     }
@@ -992,7 +992,7 @@ namespace Plugin {
             }
         }
         else {
-            result = Core::ERROR_PRIVILIGED_REQUEST;
+            result = Core::ERROR_RESTRICTED_ACTION;
         }
         return result;
     }
@@ -1022,7 +1022,7 @@ namespace Plugin {
             }
         }
         else {
-            result = Core::ERROR_PRIVILIGED_REQUEST;
+            result = Core::ERROR_RESTRICTED_ACTION;
         }
 
         return result;
