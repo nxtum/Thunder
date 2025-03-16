@@ -340,7 +340,7 @@ namespace PluginHost {
         }
         else if ((currentState == IShell::state::UNAVAILABLE) || (currentState == IShell::state::DEACTIVATION) || (currentState == IShell::state::DESTROYED) ) {
             Unlock();
-            result = Core::ERROR_ILLEGAL_STATE;
+            result = Core::ERROR_PROHIBITED_STATE;
         } else if (currentState == IShell::state::HIBERNATED) {
             result = Wakeup(3000);
             Unlock();
@@ -488,7 +488,7 @@ namespace PluginHost {
         if (currentState == IShell::state::ACTIVATION) {
             result = Core::ERROR_INPROGRESS;
         } else if ((currentState == IShell::state::DEACTIVATION) || (currentState == IShell::state::DESTROYED) || (currentState == IShell::state::HIBERNATED)) {
-            result = Core::ERROR_ILLEGAL_STATE;
+            result = Core::ERROR_PROHIBITED_STATE;
         } else if (currentState == IShell::state::DEACTIVATED) {
             result = Activate(why);
             currentState = State();
@@ -525,7 +525,7 @@ namespace PluginHost {
             Unlock();
         }
         else if ( ((currentState == IShell::state::ACTIVATION) && (why != IShell::reason::INITIALIZATION_FAILED)) || (currentState == IShell::state::DESTROYED)) {
-            result = Core::ERROR_ILLEGAL_STATE;
+            result = Core::ERROR_PROHIBITED_STATE;
             Unlock();
         }
         else if ( ((currentState == IShell::state::ACTIVATION) && (why == IShell::reason::INITIALIZATION_FAILED)) || (currentState == IShell::state::UNAVAILABLE) || (currentState == IShell::state::ACTIVATED) || (currentState == IShell::state::PRECONDITION) || (currentState == IShell::state::HIBERNATED) ) {
@@ -644,7 +644,7 @@ namespace PluginHost {
             if (currentState == IShell::state::DEACTIVATION) {
                 result = Core::ERROR_INPROGRESS;
             } else if ((currentState == IShell::state::ACTIVATION) || (currentState == IShell::state::DESTROYED) || (currentState == IShell::state::HIBERNATED)) {
-                result = Core::ERROR_ILLEGAL_STATE;
+                result = Core::ERROR_PROHIBITED_STATE;
             } else if ((currentState == IShell::state::ACTIVATED) || (currentState == IShell::state::PRECONDITION)) {
                 // See if we need can and should SUSPEND.
                 if (_stateControl == nullptr) {
@@ -677,7 +677,7 @@ namespace PluginHost {
             (currentState == IShell::state::ACTIVATED)    ||
             (currentState == IShell::state::PRECONDITION) ||
             (currentState == IShell::state::HIBERNATED)   ) {
-            result = Core::ERROR_ILLEGAL_STATE;
+            result = Core::ERROR_PROHIBITED_STATE;
         }
         else if (currentState == IShell::state::DEACTIVATED) {
 
@@ -717,7 +717,7 @@ namespace PluginHost {
         IShell::state currentState(State());
 
         if (currentState != IShell::state::ACTIVATED) {
-            result = Core::ERROR_ILLEGAL_STATE;
+            result = Core::ERROR_PROHIBITED_STATE;
         }
         else if (_connection == nullptr) {
             result = Core::ERROR_INPROC;
@@ -787,7 +787,7 @@ namespace PluginHost {
         IShell::state currentState(State());
 
         if (currentState != IShell::state::HIBERNATED) {
-            result = Core::ERROR_ILLEGAL_STATE;
+            result = Core::ERROR_PROHIBITED_STATE;
         }
         else {
             ASSERT(_connection != nullptr);

@@ -898,7 +898,7 @@ namespace Plugin {
                 result = service->Activate(PluginHost::IShell::REQUESTED);
 
                 // Normalise return code
-                if ((result != Core::ERROR_NONE) && (result != Core::ERROR_ILLEGAL_STATE) && (result !=  Core::ERROR_INPROGRESS) && (result != Core::ERROR_PENDING_CONDITIONS)) {
+                if ((result != Core::ERROR_NONE) && (result != Core::ERROR_PROHIBITED_STATE) && (result !=  Core::ERROR_INPROGRESS) && (result != Core::ERROR_PENDING_CONDITIONS)) {
                     result = Core::ERROR_OPENING_FAILED;
                 }
             }
@@ -925,7 +925,7 @@ namespace Plugin {
                 ASSERT(service.IsValid());
                 result = service->Deactivate(PluginHost::IShell::REQUESTED);
                 // Normalise return code
-                if ((result != Core::ERROR_NONE) && (result != Core::ERROR_ILLEGAL_STATE) && (result !=  Core::ERROR_INPROGRESS)) {
+                if ((result != Core::ERROR_NONE) && (result != Core::ERROR_PROHIBITED_STATE) && (result !=  Core::ERROR_INPROGRESS)) {
                     result = Core::ERROR_CLOSING_FAILED;
                 }
             }
@@ -953,7 +953,7 @@ namespace Plugin {
                 result = service->Unavailable(PluginHost::IShell::REQUESTED);
 
                 // Normalise return code
-                if ((result != Core::ERROR_NONE) && (result != Core::ERROR_ILLEGAL_STATE) && (result !=  Core::ERROR_INPROGRESS)) {
+                if ((result != Core::ERROR_NONE) && (result != Core::ERROR_PROHIBITED_STATE) && (result !=  Core::ERROR_INPROGRESS)) {
                     result = Core::ERROR_CLOSING_FAILED;
                 }
             }

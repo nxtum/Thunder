@@ -140,6 +140,10 @@ namespace Core {
                         Code = ApplicationErrorCodeBase - Core::ERROR_ILLEGAL_STATE;
                         Text = _T("The service is in an illegal state!!!.");
                         break;
+                    case Core::ERROR_PROHIBITED_STATE:
+                        Code = ApplicationErrorCodeBase - Core::ERROR_PROHIBITED_STATE;
+                        Text = _T("The service is in an non-compilant state!!!.");
+                        break;
                     case Core::ERROR_FAILED_REGISTERED:
                         Code = ApplicationErrorCodeBase - Core::ERROR_FAILED_REGISTERED;
                         Text = _T("Registration failed.");
