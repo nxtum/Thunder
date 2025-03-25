@@ -512,12 +512,12 @@ namespace Core {
                 waitpid(pid, &status, 0);
                 if (WIFEXITED(status) == false) {
                     // reboot process did not exit sanely
-                    result = Core::ERROR_UNAVAILABLE;
+                    result = Core::ERROR_UNRESOLVED;
                 }
                 if (WEXITSTATUS(status) != 0) {
                     // reboot process exited with error;
                     // most likely the user lacks the required privileges
-                    result = Core::ERROR_PRIVILIGED_REQUEST;
+                    result = Core::ERROR_RESTRICTED_ACTION;
                 } else {
                     // The init system is now shutting down the system. It will signals all
                     // programs to terminate by sending SIGTERM, followed by SIGKILL to

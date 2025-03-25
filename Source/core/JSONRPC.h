@@ -116,25 +116,17 @@ namespace Core {
                         Text = _T("Unknown method.");
                         Code = -32601; // Method not found
                         break;
+                    case Core::ERROR_INVALID_PARAMETER:
+                        Code = -32602;
+                        Text = _T("Invalid Parameters");
+                        break;
                     case Core::ERROR_PRIVILIGED_REQUEST:
                         Code = -32604; // Priviliged
                         Text = _T("method invocation not allowed.");
                         break;
                     case Core::ERROR_RESTRICTED_ACTION:
-                        Code = -32604; // Priviliged
+                        Code = ApplicationErrorCodeBase - Core::ERROR_RESTRICTED_ACTION;
                         Text = _T("Action is restricted and cannot be executed.");
-                        break;
-                    case Core::ERROR_PRIVILIGED_DEFERRED:
-                        Code = -32604;
-                        Text = _T("method invokation is deferred, Currently not allowed.");
-                        break;
-                    case Core::ERROR_TIMEDOUT:
-                        Code = -32000; // Server defined, now mapped to Timed out
-                        Text = _T("Call timed out.");
-                        break;
-                    case Core::ERROR_INCORRECT_URL:
-                        Code = ApplicationErrorCodeBase - Core::ERROR_INCORRECT_URL;
-                        Text = _T("Designator is invalid.");
                         break;
                     case Core::ERROR_ILLEGAL_STATE:
                         Code = ApplicationErrorCodeBase - Core::ERROR_ILLEGAL_STATE;
@@ -144,14 +136,6 @@ namespace Core {
                         Code = ApplicationErrorCodeBase - Core::ERROR_PROHIBITED_STATE;
                         Text = _T("The service is in an non-compilant state!!!.");
                         break;
-                    case Core::ERROR_FAILED_REGISTERED:
-                        Code = ApplicationErrorCodeBase - Core::ERROR_FAILED_REGISTERED;
-                        Text = _T("Registration failed.");
-                        break;
-                    case Core::ERROR_FAILED_UNREGISTERED:
-                        Code = ApplicationErrorCodeBase - Core::ERROR_FAILED_UNREGISTERED;
-                        Text = _T("Unregister failed.");
-                        break;
                     case Core::ERROR_HIBERNATED:
                         Code = ApplicationErrorCodeBase - Core::ERROR_HIBERNATED;
                         Text = _T("The service is in an Hibernated state!!!.");
@@ -159,6 +143,10 @@ namespace Core {
                     case Core::ERROR_UNAVAILABLE:
                         Code = ApplicationErrorCodeBase - Core::ERROR_UNAVAILABLE;
                         Text = _T("Requested service is not available.");
+                        break;
+                    case Core::ERROR_UNRESOLVED:
+                        Code = ApplicationErrorCodeBase - Core::ERROR_UNRESOLVED;
+                        Text = _T("Failed to resolve the requested service.");
                         break;
                     default:
                         if ((frameworkError & 0x80000000) == 0) {

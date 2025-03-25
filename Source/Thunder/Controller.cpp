@@ -268,7 +268,7 @@ namespace Plugin {
     {
         Core::hresult result =  Core::System::Reboot();
 
-        if ((result != Core::ERROR_NONE) && (result != Core::ERROR_UNAVAILABLE) && (result != Core::ERROR_RESTRICTED_ACTION) && (result != Core::ERROR_GENERAL)) {
+        if ((result != Core::ERROR_NONE) && (result != Core::ERROR_UNRESOLVED) && (result != Core::ERROR_RESTRICTED_ACTION) && (result != Core::ERROR_GENERAL)) {
             result = Core::ERROR_GENERAL;
         }
 
@@ -1010,7 +1010,7 @@ namespace Plugin {
                 PluginHost::IStateControl* stateControl = service->QueryInterface<PluginHost::IStateControl>();
 
                 if (stateControl == nullptr) {
-                    result = Core::ERROR_UNAVAILABLE;
+                    result = Core::ERROR_UNRESOLVED;
                 }
                 else {
                     result = stateControl->Request(PluginHost::IStateControl::command::RESUME);
@@ -1082,7 +1082,7 @@ namespace Plugin {
 
     Core::hresult Controller::Services(const Core::OptionalType<string>& callsign, IMetadata::Data::IServicesIterator*& outServices) const
     {
-        Core::hresult result = Core::ERROR_UNAVAILABLE;
+        Core::hresult result = Core::ERROR_UNRESOLVED;
         std::list<IMetadata::Data::Service> services;
 
         if (callsign.IsSet() == false) {
