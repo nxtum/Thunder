@@ -31,25 +31,22 @@
     <ClCompile Include="System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="json\JsonEnum_Configuration.cpp">
+    <ClCompile Include="..\interfaces\json\JsonEnum_Discovery.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="json\JsonEnum_Discovery.cpp">
+    <ClCompile Include="..\interfaces\json\JsonEnum_Events.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="json\JsonEnum_LifeTime.cpp">
+    <ClCompile Include="..\interfaces\json\JsonEnum_LifeTime.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="json\JsonEnum_Metadata.cpp">
+    <ClCompile Include="..\interfaces\json\JsonEnum_Metadata.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="json\JsonEnum_System.cpp">
+    <ClCompile Include="..\interfaces\json\JsonEnum_Subsystems.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="json\JsonEnum_Events.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="json\JsonEnum_Subsystems.cpp">
+    <ClCompile Include="..\interfaces\json\JsonEnum_System.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,20 +75,8 @@
     <ClInclude Include="VirtualInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IPlugin.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IShell.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IStateControl.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
     <ClInclude Include="plugins.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ISubSystem.h">
-      <Filter>Interface Files</Filter>
     </ClInclude>
     <ClInclude Include="JSONRPC.h">
       <Filter>Header Files</Filter>
@@ -100,13 +85,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="System.h">
-      <Filter>Interface Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SubSystem.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IDispatcher.h">
-      <Filter>Interface Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,13 +107,5 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="IController.h">
-      <Filter>Interface Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="IStateController.h">
-      <Filter>Interface Files</Filter>
-    </CustomBuild>
   </ItemGroup>
 </Project>
