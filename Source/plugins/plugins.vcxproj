@@ -20,12 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Channel.cpp" />
-    <ClCompile Include="..\interfaces\json\JsonEnum_Discovery.cpp" />
-    <ClCompile Include="..\interfaces\json\JsonEnum_Events.cpp" />
-    <ClCompile Include="..\interfaces\json\JsonEnum_LifeTime.cpp" />
-    <ClCompile Include="..\interfaces\json\JsonEnum_Metadata.cpp" />
-    <ClCompile Include="..\interfaces\json\JsonEnum_Subsystems.cpp" />
-    <ClCompile Include="..\interfaces\json\JsonEnum_System.cpp" />
     <ClCompile Include="Metadata.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="Service.cpp" />
