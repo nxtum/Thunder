@@ -20,7 +20,7 @@
 #pragma once
 
 #include "Module.h"
-#include "IStateControl.h"
+#include "interfaces/IStateControl.h"
 
 namespace Thunder {
 
