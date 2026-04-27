@@ -33,7 +33,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{A39F195B-4FD2-424D-A8C7-3D323C281438}</ProjectGuid>
+    <ProjectGuid>{0CA4C35A-2DE4-4BB3-804C-331D09CC3402}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>proxystubs</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
