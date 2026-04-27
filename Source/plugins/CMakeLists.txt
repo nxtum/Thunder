@@ -20,8 +20,6 @@ string(TOLOWER ${NAMESPACE} NAMESPACE_LIB)
 
 option(VIRTUALINPUT_TOOLS "Build VirtualInput tools" OFF)
 
-file(GLOB JSON_ENUM_SOURCES "${CMAKE_BINARY_DIR}/Source/interfaces/json/JsonEnum_*.cpp")
-
 add_library(${TARGET}
         Channel.cpp
         JSONRPC.cpp
@@ -33,7 +31,6 @@ add_library(${TARGET}
         SubSystem.cpp
         VirtualInput.cpp
         System.cpp
-        ${JSON_ENUM_SOURCES}
         )
 
 set(PUBLIC_HEADERS

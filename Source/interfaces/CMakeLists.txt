@@ -31,6 +31,7 @@ JsonGenerator(CODE NAMESPACE Thunder::Exchange::Controller INPUT ${CMAKE_CURRENT
 JsonGenerator(CODE NAMESPACE Thunder::PluginHost INPUT ${CMAKE_CURRENT_SOURCE_DIR}/IStateController.h OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/json" INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 file(GLOB JSON_DATA_HEADERS "${CMAKE_CURRENT_BINARY_DIR}/json/JsonData_*.h" "${CMAKE_CURRENT_BINARY_DIR}/json/json_*.h")
+file(GLOB JSON_ENUM_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/json/JsonEnum_*.cpp")
 file(GLOB PROXY_STUB_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/generated/ProxyStubs*.cpp")
 list(APPEND JSON_CODE_HEADERS "${CMAKE_CURRENT_BINARY_DIR}/json/JStateController.h")
 
@@ -40,6 +41,7 @@ add_library(${TARGET_PROXYSTUBS} SHARED
         )
 
 add_library(${TARGET} SHARED
+        ${JSON_ENUM_SOURCES}
         Module.cpp
         )
 
