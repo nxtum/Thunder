@@ -60,7 +60,7 @@ target_link_libraries(${TARGET}
           ${NAMESPACE}Messaging::${NAMESPACE}Messaging
           ${NAMESPACE}COM::${NAMESPACE}COM
           ${NAMESPACE}WebSocket::${NAMESPACE}WebSocket
-                                        ${NAMESPACE}Interfaces::${NAMESPACE}Interfaces
+          ${NAMESPACE}Interfaces::${NAMESPACE}Interfaces
         PRIVATE
           CompileSettingsDebug::CompileSettingsDebug
         )
@@ -75,7 +75,7 @@ endif()
 target_include_directories( ${TARGET}
         PUBLIC
           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../interfaces>
+          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../interfaces>
           $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/Source>
           $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${NAMESPACE}>
           $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${NAMESPACE}/interfaces>
