@@ -69,6 +69,7 @@ namespace Thunder {
 namespace Core {
 
     /* static */ SystemInfo SystemInfo::_systemInfo;
+    static CriticalSection _lock;
 
     static string ConstructUniqueId(
         const TCHAR DeviceId[],
@@ -368,6 +369,7 @@ namespace Core {
     /* static */ bool SystemInfo::GetEnvironment(const string& name, string& value)
     {
 #ifdef __LINUX__
+    SafeSyncType<CriticalSection> scopedLock(_lock);
         TCHAR* text = ::getenv(name.c_str());
 
         if (text != nullptr) {
@@ -391,6 +393,8 @@ namespace Core {
     {
         bool result = false;
 #ifdef __LINUX__
+    SafeSyncType<CriticalSection> scopedLock(_lock);
+
         if ((forced == true) || (::getenv(name.c_str()) == nullptr)) {
             if (value != nullptr) {
                 result = (::setenv(name.c_str(), value, 1) == 0);
