@@ -69,7 +69,9 @@ namespace Thunder {
 namespace Core {
 
     /* static */ SystemInfo SystemInfo::_systemInfo;
+#ifdef __LINUX__
     static CriticalSection _lock;
+#endif
 
     static string ConstructUniqueId(
         const TCHAR DeviceId[],
