@@ -389,6 +389,7 @@ namespace Core {
 
         value.assign(buffer, characters);
         return (characters > 0);
+#endif
     }
 
     /* static */ bool SystemInfo::SetEnvironment(const string& name, const TCHAR* value, const bool forced)
