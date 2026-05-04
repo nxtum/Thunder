@@ -368,8 +368,8 @@ namespace Core {
 
     /* static */ bool SystemInfo::GetEnvironment(const string& name, string& value)
     {
-        SafeSyncType<CriticalSection> scopedLock(_lock);
 #ifdef __LINUX__
+        SafeSyncType<CriticalSection> scopedLock(_lock);
         TCHAR* text = ::getenv(name.c_str());
 
         if (text != nullptr) {
