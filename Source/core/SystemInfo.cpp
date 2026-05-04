@@ -385,9 +385,12 @@ namespace Core {
 
         DWORD characters = ::GetEnvironmentVariable(name.c_str(), buffer, capacity);
 
-        ASSERT((characters > 0) && (characters < capacity));
-
-        value.assign(buffer, characters);
+        ASSERT(characters < capacity);
+        if (characters > 0) {
+            value.assign(buffer, characters);
+        } else {
+            value.clear();
+        }
         return (characters > 0);
 #endif
     }
