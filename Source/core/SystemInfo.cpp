@@ -381,12 +381,14 @@ namespace Core {
         return (text != nullptr);
 #else
         TCHAR buffer[1024];
-        DWORD bytes = GetEnvironmentVariable(name.c_str(), buffer, sizeof(buffer));
+        const DWORD capacity = sizeof(buffer) / sizeof(buffer[0]);
 
-        value = string(buffer, bytes);
+        DWORD characters = ::GetEnvironmentVariable(name.c_str(), buffer, capacity);
 
-        return (bytes > 0);
-#endif
+        ASSERT((characters > 0) && (characters < capacity));
+
+        value.assign(buffer, characters);
+        return (characters > 0);
     }
 
     /* static */ bool SystemInfo::SetEnvironment(const string& name, const TCHAR* value, const bool forced)
