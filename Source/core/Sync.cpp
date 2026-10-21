@@ -823,18 +823,26 @@ namespace Core {
     static WindowsAPI _windowsAPI;
 #endif
 
-    SharedSemaphore::SharedSemaphore(const TCHAR sourceName[], const uint32_t initCount, VARIABLE_IS_NOT_USED const uint32_t maxCount)
+    SharedSemaphore::SharedSemaphore(const TCHAR sourceName[], const uint32_t initCount, const uint32_t maxCount)
+        : SharedSemaphore(sourceName, initCount, maxCount, true)
+    {
+    }
+
+    SharedSemaphore::SharedSemaphore(const TCHAR sourceName[], const uint32_t initCount, VARIABLE_IS_NOT_USED const uint32_t maxCount, const bool initialize)
+        : _semaphore(nullptr)
     {
         ASSERT(initCount <= 1);
         ASSERT(maxCount == 1);
+        if (initialize) {
 #ifdef __WINDOWS__
-        _semaphore = (::CreateSemaphore(nullptr, initCount, maxCount, sourceName));
-        ASSERT(_semaphore != nullptr);
+            _semaphore = (::CreateSemaphore(nullptr, initCount, maxCount, sourceName));
+            ASSERT(_semaphore != nullptr);
 #else
-        _name = "/" + string(sourceName);
-        _semaphore = sem_open(_name.c_str(), O_CREAT | O_RDWR | O_EXCL, 0644,  initCount);
-        ASSERT(_semaphore != SEM_FAILED);
+            _name = "/" + string(sourceName);
+            _semaphore = sem_open(_name.c_str(), O_CREAT | O_RDWR | O_EXCL, 0644,  initCount);
+            ASSERT(_semaphore != SEM_FAILED);
 #endif
+        }
     }
 
     SharedSemaphore::SharedSemaphore(const TCHAR sourceName[])
@@ -852,13 +860,14 @@ namespace Core {
     SharedSemaphore::SharedSemaphore(void* storage, VARIABLE_IS_NOT_USED const uint32_t initCount, VARIABLE_IS_NOT_USED const uint32_t maxCount)
         : _semaphore(storage), _name("")
     {
-        ASSERT(storage != nullptr);
         ASSERT(initCount <= 1);
         ASSERT(maxCount == 1);
 #ifndef __APPLE__
-        memset(_semaphore, 0, sizeof(sem_t));
-        VARIABLE_IS_NOT_USED int result = sem_init(static_cast<sem_t*>(_semaphore), 1, initCount); 
-        ASSERT(result != -1);
+        if (_semaphore != nullptr) {
+            memset(_semaphore, 0, sizeof(sem_t));
+            VARIABLE_IS_NOT_USED int result = sem_init(static_cast<sem_t*>(_semaphore), 1, initCount);
+            ASSERT(result != -1);
+        }
 #endif
     }
 
@@ -882,7 +891,7 @@ namespace Core {
             sem_unlink(_name.c_str());
         }
 #ifndef __APPLE__
-        else { 
+        else if (_semaphore != nullptr) {
             sem_destroy(static_cast<sem_t*>(_semaphore));
         }
 #endif

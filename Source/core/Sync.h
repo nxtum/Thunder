@@ -193,6 +193,7 @@ namespace Core {
         SharedSemaphore& operator=(const SharedSemaphore&) = delete;
 
         SharedSemaphore(const TCHAR name[], const uint32_t initValue, const uint32_t maxValue);
+        SharedSemaphore(const TCHAR name[], const uint32_t initValue, const uint32_t maxValue, const bool initialize);
         SharedSemaphore(const TCHAR name[]);
 #ifndef __WINDOWS__
         /*
@@ -200,6 +201,7 @@ namespace Core {
         processes, and should be located in a region of shared memory
         (see shm_open(3), mmap(2), and shmget(2))
         Storage should be at least sizeof(sem_t)!
+        The initializing constructor accepts null storage; only destruction is valid in that state
         */
         SharedSemaphore(void *storage, const uint32_t initValue, const uint32_t maxValue);
         SharedSemaphore(void *storage);

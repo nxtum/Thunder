@@ -83,51 +83,46 @@ namespace Core {
 
         inline uint32_t RequestProduce(const uint32_t waitTime)
         {
-            // fprintf(stderr, "Entering RequestProduce: %d %d\n", (int)_producer.IsLocked(), (int)_consumer.IsLocked());
-
-            uint32_t output = _producer.Lock(waitTime);
-
-            // fprintf(stderr, "Leaving RequestProduce: %d %d\n", (int)_producer.IsLocked(), (int)_consumer.IsLocked());
+            uint32_t output = (IsValid() ? _producer.Lock(waitTime) : Core::ERROR_UNAVAILABLE);
 
             return output;
         }
         inline uint32_t Produced()
         {
-            // fprintf(stderr, "Entering Produced: %d %d %d\n", (int)_producer.IsLocked(), (int)_consumer.IsLocked(), static_cast<const uint32_t>(Size()));
+            uint32_t output = Core::ERROR_UNAVAILABLE;
 
-            _administration->_bytesWritten = static_cast<uint32_t>(Size());
+            if (IsValid() == true) {
+                _administration->_bytesWritten = static_cast<uint32_t>(Size());
 
-            uint32_t output = _consumer.Unlock();
-
-            // fprintf(stderr, "Leaving Produced: %d %d\n", (int)_producer.IsLocked(), (int)_consumer.IsLocked());
+                output = _consumer.Unlock();
+            }
 
             return output;
         }
 
         uint32_t RequestConsume(const uint32_t waitTime)
         {
-            // fprintf(stderr, "Entering RequestConsumer: %d %d\n", (int)_producer.IsLocked(), (int)_consumer.IsLocked());
+            uint32_t result = Core::ERROR_UNAVAILABLE;
 
-            uint32_t result = _consumer.Lock(waitTime);
+            if (IsValid() == true) {
+                result = _consumer.Lock(waitTime);
 
-            // fprintf(stderr, "Leaving RequestConsumer: %d %d %d\n", (int)_producer.IsLocked(), (int)_consumer.IsLocked(), (int)_administration->_bytesWritten);
-
-            // Realign the buffer with what has been written
-            Size(_administration->_bytesWritten);
+                // Realign the buffer with what has been written
+                Size(_administration->_bytesWritten);
+            }
 
             return result;
         }
 
         uint32_t Consumed()
         {
-            // fprintf(stderr, "Entering Consumed: %d %d\n", (int)_producer.IsLocked(), (int)_consumer.IsLocked());
+            uint32_t output = Core::ERROR_UNAVAILABLE;
 
-            _administration->_bytesWritten = static_cast<uint32_t>(Size());
+            if (IsValid() == true) {
+                _administration->_bytesWritten = static_cast<uint32_t>(Size());
 
-            // _administration->_bytesWritten = Size();
-            uint32_t output = _producer.Unlock();
-
-            // fprintf(stderr, "Leaving Consumed: %d %d\n", (int)_producer.IsLocked(), (int)_consumer.IsLocked());
+                output = _producer.Unlock();
+            }
 
             return output;
         }
@@ -144,12 +139,12 @@ namespace Core {
 
         uint32_t BytesWritten() const
         {
-            return (_administration->_bytesWritten);
+            return (_administration != nullptr ? _administration->_bytesWritten : 0);
         }
 
         uint32_t User(const string& userName) const
         {
-            uint32_t result = _administrationBuffer.User(userName);
+            uint32_t result = (IsValid() ? _administrationBuffer.User(userName) : Core::ERROR_UNAVAILABLE);
 
             if (result == Core::ERROR_NONE){
                 result = DataElementFile::User(userName);
@@ -159,7 +154,7 @@ namespace Core {
         }
         uint32_t Group(const string& groupName) const
         {
-            uint32_t result = _administrationBuffer.Group(groupName);
+            uint32_t result = (IsValid() ? _administrationBuffer.Group(groupName) : Core::ERROR_UNAVAILABLE);
 
             if (result == Core::ERROR_NONE){
                 result = DataElementFile::Group(groupName);
@@ -169,7 +164,7 @@ namespace Core {
         }
         uint32_t Permission(uint16_t mode) const
         {
-            uint32_t result = _administrationBuffer.Permission(mode);
+            uint32_t result = (IsValid() ? _administrationBuffer.Storage().PermissionOnHandle(mode) : Core::ERROR_UNAVAILABLE);
 
             if (result == Core::ERROR_NONE){
                 result = DataElementFile::Permission(mode);

@@ -267,6 +267,18 @@ namespace Core {
         return AccessControl::Permission(_name, flags);
     }
 
+    uint32_t File::PermissionOnHandle(VARIABLE_IS_NOT_USED uint16_t flags) const
+    {
+        uint32_t result = Core::ERROR_NOT_SUPPORTED;
+#ifdef __POSIX__
+        result = Core::ERROR_ILLEGAL_STATE;
+        if (IsOpen() == true) {
+            result = (::fchmod(_handle, flags) == 0 ? Core::ERROR_NONE : Core::ERROR_GENERAL);
+        }
+#endif
+        return result;
+    }
+
 
     Directory::Directory()
         : _name()
